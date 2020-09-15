@@ -247,6 +247,28 @@ def generate_drugbank_CHEBI_id_mapping_file():
     row += 1
   workbook.close()
 
+def get_drug_weight(name):
+  lst = get_childByDrugName(name)
+  w = -1
+  if (lst[0]):
+    c = lst[1].find(root_str+"experimental-properties")
+    print (len(c))
+    for elem in c:
+      print (elem[0].text)
+      if (elem[1].text == "Molecular Weight"):
+        w = float(elem[1].text)
+        break
+  return w
+
+def get_atc_codes(name):
+  lst = get_childByDrugName(name)
+  code = ""
+  #print (name)
+  if (lst[0]):
+    c = lst[1].find(root_str+"atc-codes")
+    codes = [a.attrib['code'] for a in c]
+  return codes  
+  
 #We can use the APIs this way -- 
 generate_drugbank_CHEBI_id_mapping_file()
 c = get_childByDrugName('Stanolone')
